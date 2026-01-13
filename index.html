@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D.E.R. // TERMINAL DE ACESSO</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-top: 4px solid #33ff66;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(to bottom, #1a1a1a, #0a0a0a);
+            border-bottom: 1px solid #333;
+        }
+
+        .status-bar {
+            color: #33ff66;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 90%;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid #333;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .card::before {
+            content: "ID: 099-B";
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: #33ff66;
+            color: #000;
+            font-size: 10px;
+            padding: 2px 5px;
+        }
+
+        h1, h2 {
+            color: #33ff66;
+            text-transform: uppercase;
+        }
+
+        .glitch {
+            text-shadow: 2px 0 #ff0000, -2px 0 #0000ff;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #33ff66;
+            text-decoration: none;
+            border: 1px solid #33ff66;
+            padding: 5px 15px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            background: #33ff66;
+            color: #000;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .data-table th, .data-table td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .data-table th {
+            color: #33ff66;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            font-size: 0.7rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="status-bar">SISTEMA OPERACIONAL D.E.R. v4.0.2 - CONEXÃO SEGURA</div>
+        <h1 class="glitch">PROJETO ECHO</h1>
+        <nav>
+            <ul>
+                <li><a href="#">ARQUIVOS</a></li>
+                <li><a href="#">AGENTES</a></li>
+                <li><a href="#">BESTIÁRIO</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="card">
+            <h2>RESUMO DA MISSÃO: "O SILÊNCIO BRANCO"</h2>
+            <p><strong>LOCAL:</strong> Antártida - Estação de Pesquisa Vostok.</p>
+            <p><strong>OBJETIVO:</strong> Investigar flutuação temporal na frequência 440Hz. Relatos de pesquisadores que viram a si mesmos caminhando do lado de fora da estação antes mesmo de chegarem ao local.</p>
+            <p><em>Cuidado: Echos de classe C são capazes de interação física limitada.</em></p>
+        </section>
+
+        <section class="card">
+            <h2>SISTEMA DE REGRAS RÁPIDO</h2>
+            <table class="data-table">
+                <tr>
+                    <th>Atributo</th>
+                    <th>Função no Jogo</th>
+                </tr>
+                <tr>
+                    <td>Sincronia</td>
+                    <td>Resistência mental e conexão com o Echo.</td>
+                </tr>
+                <tr>
+                    <td>Frequência</td>
+                    <td>Capacidade de perceber anomalias invisíveis.</td>
+                </tr>
+                <tr>
+                    <td>Inércia</td>
+                    <td>Força física e combate direto.</td>
+                </tr>
+            </table>
+        </section>
+    </div>
+
+    <footer>
+        [ACESSO RESTRITO À CLASSIFICAÇÃO NÍVEL 4] <br>
+        &copy; 2026 DIVISÃO DE ESTABILIZAÇÃO DE REALIDADE.
+    </footer>
+
+</body>
+</html>
