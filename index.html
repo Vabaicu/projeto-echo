@@ -2,220 +2,44 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>C.R.I.S. // CENTRAL D.E.R.</title>
+    <title>C.R.I.S. // DATABASE V5</title>
     <style>
         :root { --green: #33ff66; --blue: #3399ff; --purple: #a033ff; --orange: #ff9933; --red: #ff4444; --bg: #050505; }
-        body { background: var(--bg); color: #eee; font-family: 'Courier New', monospace; margin: 0; }
+        body { background: var(--bg); color: #eee; font-family: 'Courier New', monospace; margin: 0; padding: 0; }
         
         /* Navegação */
-        nav { background: #000; border-bottom: 2px solid var(--green); padding: 15px; display: none; justify-content: center; position: sticky; top: 0; z-index: 100; gap: 10px; }
-        nav button { background: #111; border: 1px solid #333; color: #888; padding: 10px; cursor: pointer; font-weight: bold; text-transform: uppercase; font-size: 0.7rem; }
-        nav button.active { color: var(--green); border-color: var(--green); box-shadow: 0 0 10px var(--green); }
+        nav { background: #000; border-bottom: 2px solid var(--green); padding: 10px; display: none; justify-content: center; gap: 5px; position: sticky; top: 0; z-index: 1000; }
+        nav button { background: #111; border: 1px solid #333; color: #888; padding: 10px; cursor: pointer; font-weight: bold; font-size: 0.7rem; }
+        nav button.active { color: var(--green); border-color: var(--green); box-shadow: 0 0 8px var(--green); }
 
         .container { max-width: 800px; margin: 20px auto; padding: 15px; }
-        .aba { display: none; background: #111; border: 1px solid #222; padding: 20px; }
-        .aba.active { display: block; }
-
-        /* Tela de Seleção */
-        .card-agente { background: #111; border: 1px solid #333; padding: 20px; margin-bottom: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .card-agente:hover { border-color: var(--green); }
-        .btn-del-ag { background: var(--red); color: white; border: none; padding: 10px; cursor: pointer; font-weight: bold; }
-
-        /* Inputs */
-        h2 { color: var(--green); border-bottom: 1px solid #333; padding-bottom: 5px; font-size: 1rem; text-transform: uppercase; margin-top: 20px; }
-        input, select, textarea { background: #000; color: #fff; border: 1px solid #444; padding: 10px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: monospace; }
         
-        /* Perícias */
+        /* Telas */
+        .tela { display: none; }
+        .active { display: block !important; }
+
+        /* Estilo dos Cards de Agente */
+        .card-agente { background: #111; border: 1px solid #333; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-radius: 4px; }
+        .card-agente:hover { border-color: var(--green); }
+        .btn-excluir { background: var(--red); color: white; border: none; padding: 8px 12px; cursor: pointer; border-radius: 3px; font-weight: bold; }
+
+        /* Inputs e Formatação */
+        h2 { color: var(--green); border-bottom: 1px solid #333; padding-bottom: 5px; font-size: 1rem; text-transform: uppercase; margin-top: 20px; }
+        input, select, textarea { background: #000; color: #fff; border: 1px solid #444; padding: 12px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: monospace; }
+        
+        /* Grid Perícias */
         .p-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .p-item { display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; padding: 8px; border: 1px solid #222; font-size: 0.8rem; }
-        .sel-p { background: #111; border: 1px solid #444; color: #666; width: 55px; font-weight: bold; text-align: center; }
+        .sel-p { background: #111; border: 1px solid #444; color: #666; width: 60px; font-weight: bold; text-align: center; }
         .p5 { color: var(--green); border-color: var(--green); }
         .p10 { color: var(--blue); border-color: var(--blue); }
         .p15 { color: var(--purple); border-color: var(--purple); }
         .p20 { color: var(--orange); border-color: var(--orange); }
 
-        /* Ressonâncias */
-        .sub-nav { display: flex; gap: 10px; margin-bottom: 15px; }
-        .sub-nav button { flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 8px; cursor: pointer; }
-        .res-card { background: #000; border-left: 4px solid var(--purple); padding: 15px; margin-bottom: 10px; border-top: 1px solid #222; border-right: 1px solid #222; border-bottom: 1px solid #222; }
-        .btn-add-res { background: var(--purple); color: white; border: none; padding: 8px; cursor: pointer; width: 100%; font-weight: bold; }
+        /* Itens e Ressonâncias */
+        .lista-item { background: #000; border-left: 4px solid var(--purple); padding: 12px; margin-bottom: 10px; border-radius: 0 4px 4px 0; border-top: 1px solid #222; border-right: 1px solid #222; border-bottom: 1px solid #222; }
+        .sub-menu { display: flex; gap: 10px; margin-bottom: 15px; }
+        .sub-menu button { flex: 1; padding: 10px; background: #222; color: #fff; border: 1px solid #444; cursor: pointer; }
     </style>
 </head>
 <body>
-
-    <section id="tela-inicial" class="container">
-        <h1 style="color: var(--green); text-align: center;">C.R.I.S. // DATABASE</h1>
-        <div id="lista-agentes"></div>
-        <button onclick="novoAgente()" style="width:100%; background:var(--green); border:none; padding:15px; font-weight:bold; cursor:pointer;">+ CRIAR NOVO AGENTE</button>
-        
-        <p style="margin-top: 50px; text-align: center;">
-            <button onclick="resetGeral()" style="background:none; border:none; color:#333; cursor:pointer; font-size: 0.6rem;">[ FORMATAR DATABASE (CUIDADO) ]</button>
-        </p>
-    </section>
-
-    <nav id="nav-main">
-        <button onclick="irParaInicio()">← SAIR</button>
-        <button id="n-fic" class="active" onclick="mudarAba('ficha')">FICHA</button>
-        <button id="n-inv" onclick="mudarAba('inv')">INV.</button>
-        <button id="n-res" onclick="mudarAba('res')">RESSONÂNCIA</button>
-    </nav>
-
-    <div class="container" id="painel-agente" style="display:none;">
-        
-        <div id="aba-ficha" class="aba active">
-            <h2>AGENTE</h2>
-            <input type="text" id="f-nome" placeholder="NOME" onchange="salvarEAtualizar()">
-            <select id="f-ner" onchange="salvarEAtualizar()">
-                <option value="5">N.E.R. 05%</option><option value="50">N.E.R. 50%</option><option value="99">N.E.R. 99%</option>
-            </select>
-            <h2>PERÍCIAS</h2>
-            <div class="p-grid" id="cont-pericias"></div>
-        </div>
-
-        <div id="aba-inv" class="aba">
-            <h2>INVENTÁRIO</h2>
-            <input type="text" id="i-nome" placeholder="Nome do item...">
-            <button onclick="addInv()" style="background:var(--green); width:100%; border:none; padding:10px; cursor:pointer; font-weight:bold;">ADICIONAR ITEM</button>
-            <div id="lista-inv" style="margin-top:20px;"></div>
-        </div>
-
-        <div id="aba-res" class="aba">
-            <div class="sub-nav">
-                <button onclick="mudarSub('meus')">MEUS PODERES</button>
-                <button onclick="mudarSub('bib')">BIBLIOTECA</button>
-                <button onclick="mudarSub('criar')">CRIAR NOVO</button>
-            </div>
-
-            <div id="res-meus">
-                <h2>RESSONÂNCIAS ATIVAS</h2>
-                <div id="lista-res-agente"></div>
-            </div>
-
-            <div id="res-bib" style="display:none;">
-                <h2>BIBLIOTECA D.E.R.</h2>
-                <div id="lista-bib"></div>
-            </div>
-
-            <div id="res-criar" style="display:none;">
-                <h2>CRIAR RESSONÂNCIA</h2>
-                <input type="text" id="c-res-nome" placeholder="Nome do Poder">
-                <textarea id="c-res-desc" placeholder="Efeito detalhado..."></textarea>
-                <button onclick="criarRes()" style="background:var(--purple); color:white; border:none; padding:10px; width:100%; cursor:pointer;">VINCULAR AO AGENTE</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let agentes = JSON.parse(localStorage.getItem('CRIS_v4')) || [];
-        let atualIdx = null;
-
-        const PERICIAS = ["Atletismo", "Crime", "Furtividade", "Investigação", "Luta", "Ocultismo", "Percepção", "Pontaria", "Tecnologia", "Vontade"];
-        const BIBLIOTECA = [
-            {nome: "Eco de Pavor", desc: "Alvo fica paralisado de medo por 1 rodada."},
-            {nome: "Sincronia Visual", desc: "Enxerga através de paredes por instantes."},
-            {nome: "Cura Vibracional", desc: "Fecha ferimentos usando frequências sonoras."}
-        ];
-
-        function init() {
-            const div = document.getElementById('lista-agentes');
-            div.innerHTML = '';
-            agentes.forEach((ag, i) => {
-                div.innerHTML += `
-                    <div class="card-agente" onclick="abrirAgente(${i})">
-                        <strong>${ag.nome} (NER ${ag.ner}%)</strong>
-                        <button class="btn-del-ag" onclick="deletar(event, ${i})">X</button>
-                    </div>`;
-            });
-            document.getElementById('tela-inicial').style.display = 'block';
-            document.getElementById('nav-main').style.display = 'none';
-            document.getElementById('painel-agente').style.display = 'none';
-        }
-
-        function novoAgente() {
-            agentes.push({nome: "Novo Agente", ner: 5, pericias: {}, inv: [], res: []});
-            salvar(); init();
-        }
-
-        function abrirAgente(i) {
-            atualIdx = i;
-            const ag = agentes[i];
-            document.getElementById('tela-inicial').style.display = 'none';
-            document.getElementById('nav-main').style.display = 'flex';
-            document.getElementById('painel-agente').style.display = 'block';
-            document.getElementById('f-nome').value = ag.nome;
-            document.getElementById('f-ner').value = ag.ner;
-            renderPer(); renderInv(); renderRes(); renderBib();
-        }
-
-        function renderPer() {
-            const cont = document.getElementById('cont-pericias');
-            cont.innerHTML = '';
-            PERICIAS.forEach(p => {
-                const v = agentes[atualIdx].pericias[p] || 0;
-                cont.innerHTML += `<div class="p-item"><span>${p}</span><select class="sel-p ${v>0?'p'+v:''}" onchange="salvarP('${p}', this)"><option value="0" ${v==0?'selected':''}>0</option><option value="5" ${v==5?'selected':''}>5</option><option value="10" ${v==10?'selected':''}>10</option><option value="15" ${v==15?'selected':''}>15</option><option value="20" ${v==20?'selected':''}>20</option></select></div>`;
-            });
-        }
-
-        function salvarP(p, el) { agentes[atualIdx].pericias[p] = parseInt(el.value); salvar(); renderPer(); }
-
-        function renderInv() {
-            const div = document.getElementById('lista-inv');
-            div.innerHTML = '';
-            agentes[atualIdx].inv.forEach((it, i) => {
-                div.innerHTML += `<div class="p-item">${it} <button onclick="remInv(${i})" style="color:red; background:none; border:none;">X</button></div>`;
-            });
-        }
-        function addInv() { const n = document.getElementById('i-nome'); if(n.value){ agentes[atualIdx].inv.push(n.value); n.value=''; salvar(); renderInv(); } }
-        function remInv(i) { agentes[atualIdx].inv.splice(i, 1); salvar(); renderInv(); }
-
-        function renderRes() {
-            const div = document.getElementById('lista-res-agente');
-            div.innerHTML = '';
-            agentes[atualIdx].res.forEach((r, i) => {
-                div.innerHTML += `<div class="res-card"><strong>${r.nome}</strong><p>${r.desc}</p><button onclick="remRes(${i})" style="color:red; background:none; border:none;">Remover</button></div>`;
-            });
-        }
-
-        function renderBib() {
-            const div = document.getElementById('lista-bib');
-            div.innerHTML = '';
-            BIBLIOTECA.forEach(r => {
-                div.innerHTML += `<div class="res-card"><strong>${r.nome}</strong><p>${r.desc}</p><button class="btn-add-res" onclick="vincular('${r.nome}','${r.desc}')">ADICIONAR</button></div>`;
-            });
-        }
-
-        function criarRes() {
-            const n = document.getElementById('c-res-nome');
-            const d = document.getElementById('c-res-desc');
-            if(n.value){ vincular(n.value, d.value); n.value=''; d.value=''; }
-        }
-
-        function vincular(n, d) { agentes[atualIdx].res.push({nome: n, desc: d}); salvar(); renderRes(); mudarSub('meus'); }
-        function remRes(i) { agentes[atualIdx].res.splice(i, 1); salvar(); renderRes(); }
-
-        function salvarEAtualizar() {
-            agentes[atualIdx].nome = document.getElementById('f-nome').value;
-            agentes[atualIdx].ner = document.getElementById('f-ner').value;
-            salvar();
-        }
-
-        function salvar() { localStorage.setItem('CRIS_v4', JSON.stringify(agentes)); }
-        function deletar(e, i) { e.stopPropagation(); if(confirm("Apagar agente?")){ agentes.splice(i, 1); salvar(); init(); } }
-        function mudarAba(id) { 
-            document.querySelectorAll('.aba').forEach(a => a.classList.remove('active'));
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-            document.getElementById('aba-'+id).classList.add('active');
-            document.getElementById('n-'+id).classList.add('active');
-        }
-        function mudarSub(id) {
-            document.getElementById('res-meus').style.display = id === 'meus' ? 'block' : 'none';
-            document.getElementById('res-bib').style.display = id === 'bib' ? 'block' : 'none';
-            document.getElementById('res-criar').style.display = id === 'criar' ? 'block' : 'none';
-        }
-        function irParaInicio() { salvarEAtualizar(); init(); }
-        function resetGeral() { if(confirm("APAGAR TUDO?")){ localStorage.clear(); location.reload(); } }
-
-        window.onload = init;
-    </script>
-</body>
-</html>
