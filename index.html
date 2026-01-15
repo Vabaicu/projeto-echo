@@ -2,66 +2,60 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>C.R.I.S. // DATABASE COMPLETO</title>
+    <title>C.R.I.S. // DATABASE D.E.R.</title>
     <style>
         :root { --green: #33ff66; --blue: #3399ff; --purple: #a033ff; --orange: #ff9933; }
-        body { background: #050505; color: #eee; font-family: monospace; margin: 0; text-align: center; }
+        body { background: #050505; color: #eee; font-family: 'Courier New', monospace; margin: 0; }
         
-        nav { background: #000; border-bottom: 2px solid var(--green); padding: 15px; position: sticky; top: 0; z-index: 100; }
+        nav { background: #000; border-bottom: 2px solid var(--green); padding: 15px; display: flex; justify-content: center; position: sticky; top: 0; z-index: 100; }
         nav button { background: none; border: 1px solid #333; color: #888; padding: 10px 20px; cursor: pointer; margin: 0 5px; font-weight: bold; text-transform: uppercase; }
         nav button.active { color: var(--green); border-color: var(--green); box-shadow: 0 0 10px var(--green); }
 
         .container { max-width: 800px; margin: 20px auto; padding: 10px; }
         .aba { display: none; background: #111; border: 1px solid #222; padding: 20px; text-align: left; }
-        .aba.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .aba.active { display: block; }
 
-        h2 { color: var(--green); border-bottom: 1px solid #333; margin-top: 0; font-size: 1.2rem; letter-spacing: 2px; }
-        label { display: block; color: var(--green); font-size: 0.8rem; margin: 10px 0 5px 0; }
-        input, select { background: #000; color: #fff; border: 1px solid #444; padding: 10px; width: 100%; margin-bottom: 15px; box-sizing: border-box; }
+        h2 { color: var(--green); border-bottom: 1px solid #333; margin-top: 20px; font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase; }
+        label { display: block; color: var(--green); font-size: 0.75rem; margin: 10px 0 5px 0; font-weight: bold; }
+        input, select { background: #000; color: #fff; border: 1px solid #444; padding: 10px; width: 100%; box-sizing: border-box; font-family: monospace; }
 
-        #desc-classe { background: #000; padding: 15px; border: 1px dashed #444; color: #bbb; font-size: 0.9rem; margin-bottom: 20px; border-left: 4px solid var(--green); }
+        #desc-classe { background: #080808; padding: 15px; border-left: 4px solid var(--green); color: #bbb; font-size: 0.85rem; margin-top: 10px; min-height: 40px; }
 
-        /* Grade de Perícias */
-        .pericia-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .pericia-item { 
-            display: flex; justify-content: space-between; align-items: center; 
-            background: #0a0a0a; padding: 8px 12px; border: 1px solid #222; 
-        }
-        .pericia-item span { font-size: 0.9rem; text-transform: uppercase; }
+        /* Grid de Perícias */
+        .pericia-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
+        .pericia-item { display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; padding: 6px 10px; border: 1px solid #222; }
+        .pericia-item span { font-size: 0.85rem; text-transform: uppercase; }
 
-        /* Select de Perícia Estilizado */
-        .sel-p { 
-            background: #111; border: 1px solid #444; color: #555; 
-            padding: 5px; width: 60px; cursor: pointer; font-weight: bold; text-align: center;
-        }
+        /* Select de Perícia */
+        .sel-p { background: #111; border: 1px solid #444; color: #666; padding: 4px; width: 60px; cursor: pointer; font-weight: bold; text-align: center; }
         
         /* Cores Dinâmicas */
         .p5 { color: var(--green) !important; border-color: var(--green) !important; }
         .p10 { color: var(--blue) !important; border-color: var(--blue) !important; }
         .p15 { color: var(--purple) !important; border-color: var(--purple) !important; }
         .p20 { color: var(--orange) !important; border-color: var(--orange) !important; }
+
+        .status-header { display: grid; grid-template-columns: 2fr 1fr; gap: 15px; }
     </style>
 </head>
 <body>
 
     <nav>
-        <button id="btn1" class="active" onclick="trocar('ficha')">TERMINAL</button>
-        <button id="btn2" onclick="trocar('manual')">MANUAL</button>
+        <button id="btn1" class="active" onclick="trocar('ficha')">TERMINAL DE AGENTE</button>
+        <button id="btn2" onclick="trocar('manual')">MANUAL D.E.R.</button>
     </nav>
 
     <div class="container">
         <div id="aba-ficha" class="aba active">
-            <h2>DADOS DO AGENTE</h2>
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
+            <div class="status-header">
                 <div>
-                    <label>NOME / CODINOME:</label>
-                    <input type="text" placeholder="Ex: Agente K...">
+                    <label>IDENTIFICAÇÃO DO AGENTE</label>
+                    <input type="text" placeholder="CODINOME OPERACIONAL">
                 </div>
                 <div>
-                    <label>NEX %:</label>
-                    <select id="nex-sel">
-                        <option value="5">5%</option><option value="10">10%</option><option value="15">15%</option>
+                    <label>N.E.R. % (EXPOSIÇÃO)</label>
+                    <select id="ner-sel">
+                        <option value="5">05%</option><option value="10">10%</option><option value="15">15%</option>
                         <option value="20">20%</option><option value="25">25%</option><option value="30">30%</option>
                         <option value="35">35%</option><option value="40">40%</option><option value="45">45%</option>
                         <option value="50">50%</option><option value="55">55%</option><option value="60">60%</option>
@@ -72,65 +66,53 @@
                 </div>
             </div>
 
-            <label>ESPECIALIZAÇÃO:</label>
+            <label>ESPECIALIZAÇÃO OPERACIONAL</label>
             <select id="sel-classe" onchange="atualizarClasse()">
-                <option value="">Selecione...</option>
-                <option value="tatico">Tático de Assalto (Combate)</option>
-                <option value="sintonizador">Sintonizador de Echo (Ocultista)</option>
-                <option value="especialista">Especialista (Tecnologia)</option>
+                <option value="">Selecione uma especialidade...</option>
+                <option value="tatico">Tático de Assalto</option>
+                <option value="sintonizador">Sintonizador de Echo</option>
+                <option value="especialista">Especialista Técnico</option>
             </select>
-            <div id="desc-classe">Aguardando seleção de diretrizes...</div>
+            <div id="desc-classe">Aguardando definição de diretrizes...</div>
 
-            <h2>PERÍCIAS DE CAMPO</h2>
-            <div class="pericia-grid" id="grid-pericias">
-                </div>
+            <h2>MATRIZ DE PERÍCIAS</h2>
+            <div class="pericia-grid">
+                <div class="pericia-item"><span>Atletismo</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Atualidades</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Ciências</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Crime</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Diplomacia</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Fortitude</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Furtividade</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Investigação</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Luta</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Medicina</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Ocultismo</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Percepção</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Pontaria</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Reflexos</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Tática</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Tecnologia</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+                <div class="pericia-item"><span>Vontade</span><select class="sel-p" onchange="mudarCor(this)"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></div>
+            </div>
         </div>
 
         <div id="aba-manual" class="aba">
-            <h2>DIRETRIZES TÉCNICAS</h2>
-            <p>O sucesso das missões depende do equilíbrio entre seus atributos e o nível de exposição (NEX).</p>
-            <p><strong>GRAUS DE TREINAMENTO:</strong></p>
-            <p style="color:var(--green)">[+5] TREINADO: Conhecimento básico e prático.</p>
-            <p style="color:var(--blue)">[+10] VETERANO: Experiência comprovada em combate.</p>
-            <p style="color:var(--purple)">[+15] EXPERT: Referência técnica na área.</p>
-            <p style="color:var(--orange)">[+20] MUNDIAL: Um dos melhores da história.</p>
+            <h2>MANUAL DE OPERAÇÕES (D.E.R.)</h2>
+            <p><strong>N.E.R. (Nível de Exposição à Realidade):</strong> Mede o quanto de Echo o seu corpo suporta. Acima de 50%, a realidade ao seu redor começa a vibrar.</p>
+            <p><strong>TREINAMENTOS:</strong></p>
+            <p style="color:var(--green)">+05 TREINADO: Conhecimento básico de campo.</p>
+            <p style="color:var(--blue)">+10 VETERANO: Experiência em múltiplas incursões.</p>
+            <p style="color:var(--purple)">+15 EXPERT: Domínio técnico total.</p>
+            <p style="color:var(--orange)">+20 MUNDIAL: Capacidade além do limite humano.</p>
         </div>
     </div>
 
     <script>
-        // Lista completa de perícias
-        const listaPericias = [
-            "Acrobacia", "Adestramento", "Artes", "Atletismo", "Atualidades", 
-            "Ciências", "Crime", "Diplomacia", "Enganação", "Fortitude", 
-            "Furtividade", "Iniciativa", "Intimidação", "Intuição", "Investigação", 
-            "Luta", "Medicina", "Ocultismo", "Percepção", "Pilotagem", 
-            "Pontaria", "Reflexos", "Religião", "Sobrevivência", "Tática", "Tecnologia", "Vontade"
-        ];
-
-        // Gerar as perícias na tela
-        const grid = document.getElementById('grid-pericias');
-        listaPericias.forEach(pericia => {
-            const div = document.createElement('div');
-            div.className = 'pericia-item';
-            div.innerHTML = `
-                <span>${pericia}</span>
-                <select class="sel-p" onchange="mudarCor(this)">
-                    <option value="0">0</option>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                </select>
-            `;
-            grid.appendChild(div);
-        });
-
         function mudarCor(select) {
             const val = select.value;
-            select.className = "sel-p"; // Reseta
-            if(val !== "0") {
-                select.classList.add("p" + val);
-            }
+            select.className = "sel-p";
+            if(val !== "0") select.classList.add("p" + val);
         }
 
         function trocar(nome) {
@@ -149,13 +131,13 @@
         }
 
         function atualizarClasse() {
-            const escolhas = {
-                tatico: "TÁTICO: Especialista em combate e proteção. Ganha +5 PV por NEX e redução de dano físico. Sua função é garantir que a equipe sobreviva ao confronto direto.",
-                sintonizador: "SINTONIZADOR: Conecta-se com as distorções do ECHO. Pode gastar pontos de Sincronia para manipular a realidade, ver rastro de criaturas e estabilizar fendas.",
-                especialista: "ESPECIALISTA: Gênio técnico e mestre em perícias. Consegue hackear dispositivos, criar itens de suporte e possui o dobro de pontos de perícia iniciais."
+            const info = {
+                tatico: "TÁTICO DE ASSALTO: Especialista em linha de frente. Recebe +5 PV por NEX e resistência física a Echos corporais.",
+                sintonizador: "SINTONIZADOR DE ECHO: Sensível a flutuações. Pode prever eventos 2 segundos antes de ocorrerem e sentir a presença de anomalias.",
+                especialista: "ESPECIALISTA TÉCNICO: Mestre em ferramentas. Consegue hackear qualquer sistema da D.E.R. e criar equipamentos com sucata de realidade."
             };
-            const valor = document.getElementById('sel-classe').value;
-            document.getElementById('desc-classe').innerText = escolhas[valor] || "Aguardando seleção de diretrizes...";
+            const v = document.getElementById('sel-classe').value;
+            document.getElementById('desc-classe').innerText = info[v] || "Aguardando definição de diretrizes...";
         }
     </script>
 </body>
