@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C.R.I.S. // PROJETO ECHO</title>
+    <title>C.R.I.S. // INTERFACE DE AGENTE</title>
     <style>
         :root {
             --neon-green: #33ff66;
-            --dark-bg: #080808;
-            --panel-bg: #121212;
-            --border-color: #222;
+            --blue: #3399ff;
+            --purple: #a033ff;
+            --orange: #ff9933;
+            --dark-bg: #050505;
+            --panel-bg: #111;
         }
 
         body {
@@ -17,20 +19,18 @@
             color: #eee;
             font-family: 'Courier New', monospace;
             margin: 0;
-            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* Menu Superior Estilo C.R.I.S */
         nav {
             width: 100%;
             background: #000;
             border-bottom: 1px solid var(--neon-green);
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 20px;
             padding: 15px 0;
             position: sticky;
             top: 0;
@@ -38,137 +38,152 @@
         }
 
         nav button {
-            background: none;
-            border: none;
-            color: #666;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 1rem;
-            transition: 0.3s;
+            background: none; border: none; color: #666;
+            cursor: pointer; text-transform: uppercase; font-weight: bold;
         }
 
-        nav button.active { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
+        nav button.active { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
 
-        .container { width: 90%; max-width: 900px; padding: 40px 0; }
+        .container { width: 95%; max-width: 900px; padding: 20px 0; }
         .page { display: none; }
-        .page.active { display: block; animation: fadeIn 0.5s; }
+        .page.active { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .card { background: var(--panel-bg); border: 1px solid #222; padding: 20px; margin-bottom: 20px; }
+        h2 { color: var(--neon-green); border-bottom: 1px solid #333; padding-bottom: 5px; font-size: 1.2rem; }
 
-        .card { background: var(--panel-bg); border: 1px solid var(--border-color); padding: 30px; position: relative; }
-        h1, h2 { color: var(--neon-green); text-transform: uppercase; letter-spacing: 2px; }
-
-        /* Guia de Classes */
-        .class-box { border: 1px solid #333; padding: 15px; margin-bottom: 15px; border-left: 4px solid var(--neon-green); }
-        .class-box h3 { margin-top: 0; color: #fff; }
-
-        /* Ficha e Criação */
-        .input-group { margin-bottom: 20px; }
-        label { display: block; color: var(--neon-green); font-size: 0.8rem; margin-bottom: 5px; }
+        label { display: block; color: var(--neon-green); font-size: 0.7rem; margin-bottom: 5px; margin-top: 10px; }
         input, select, textarea { 
-            background: #000; border: 1px solid #444; color: #fff; padding: 12px; width: 100%; box-sizing: border-box; 
+            background: #000; border: 1px solid #333; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; 
         }
 
-        .attr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0; }
-        .attr-card { background: #1a1a1a; padding: 15px; text-align: center; border: 1px solid #333; }
-        .attr-val { font-size: 2.5rem; color: var(--neon-green); display: block; margin: 10px 0; }
+        /* Descrição da Classe */
+        #desc-classe {
+            background: #0a0a0a;
+            padding: 15px;
+            border: 1px dashed #444;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #bbb;
+        }
+
+        /* Atributos */
+        .attr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0; }
+        .attr-box { background: #1a1a1a; padding: 10px; text-align: center; border: 1px solid #333; }
+        .attr-val { font-size: 1.8rem; color: var(--neon-green); display: block; }
+
+        /* Perícias */
+        .pericia-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .pericia-item { 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: #0a0a0a; padding: 8px 12px; border: 1px solid #222;
+        }
+        .btn-pericia {
+            border: 1px solid #444; background: none; color: #666; 
+            padding: 5px 10px; cursor: pointer; min-width: 45px; font-weight: bold;
+        }
         
-        .btn-circle { 
-            background: #333; color: #fff; border: none; width: 30px; height: 30px; cursor: pointer; border-radius: 50%;
-        }
-        .btn-circle:hover { background: var(--neon-green); color: #000; }
-
-        .nex-selector { margin-top: 20px; }
-        .nex-display { font-size: 1.5rem; color: var(--neon-green); font-weight: bold; }
+        /* Cores das Perícias */
+        .p-5 { color: var(--neon-green) !important; border-color: var(--neon-green) !important; }
+        .p-10 { color: var(--blue) !important; border-color: var(--blue) !important; }
+        .p-15 { color: var(--purple) !important; border-color: var(--purple) !important; }
+        .p-20 { color: var(--orange) !important; border-color: var(--orange) !important; }
 
         .btn-main {
             background: var(--neon-green); color: #000; border: none; padding: 15px; width: 100%; 
-            font-weight: bold; cursor: pointer; margin-top: 20px; text-transform: uppercase;
+            font-weight: bold; cursor: pointer; margin-top: 20px;
         }
+
+        .btn-circle { background: #333; color: #fff; border: none; width: 25px; height: 25px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <nav>
-        <button id="btn-guia" class="active" onclick="showPage('guia')">Diretrizes (Classes)</button>
-        <button id="btn-ficha" onclick="showPage('ficha')">Terminal de Agente</button>
+        <button id="btn-ficha" class="active" onclick="showPage('ficha')">TERMINAL DE AGENTE</button>
+        <button id="btn-guia" onclick="showPage('guia')">MANUAL D.E.R.</button>
     </nav>
 
     <div class="container">
         
-        <section id="guia" class="page active">
-            <h1>DIRETRIZES DA D.E.R.</h1>
-            <p>Selecione sua especialização para lidar com os Echos de realidade.</p>
-            
-            <div class="class-box">
-                <h3>TÁTICO DE ASSALTO</h3>
-                <p>Especialistas em combate direto e supressão de ameaças físicas. Possuem bônus em <strong>Inércia</strong> e proteção pesada.</p>
-            </div>
-
-            <div class="class-box">
-                <h3>SINTONIZADOR DE ECHO</h3>
-                <p>Agentes sensíveis a distorções. Conseguem manipular a <strong>Frequência</strong> para prever ataques ou estabilizar fendas.</p>
-            </div>
-
-            <div class="class-box">
-                <h3>ESPECIALISTA EM TECNOLOGIA</h3>
-                <p>Focados em decodificar sinais e usar equipamentos de ponta. Alta <strong>Sincronia</strong> com sistemas digitais e mecânicos.</p>
-            </div>
-        </section>
-
-        <section id="ficha" class="page">
+        <section id="ficha" class="page active">
             <div class="card">
-                <h2>CRIAÇÃO DE AGENTE</h2>
+                <h2>IDENTIFICAÇÃO</h2>
+                <label>NOME DO AGENTE</label>
+                <input type="text" id="nome" placeholder="NOME/CODINOME">
                 
-                <div class="input-group">
-                    <label>NOME DO PERSONAGEM / CODINOME</label>
-                    <input type="text" id="nome" placeholder="Digite o nome...">
-                </div>
+                <label>CLASSE OPERACIONAL</label>
+                <select id="classe" onchange="atualizarClasse()">
+                    <option value="nenhuma">Selecione uma classe...</option>
+                    <option value="tatico">Tático de Assalto</option>
+                    <option value="sintonizador">Sintonizador de Echo</option>
+                    <option value="especialista">Especialista Tecnológico</option>
+                </select>
+                <div id="desc-classe">Selecione uma classe para ver as diretrizes.</div>
+            </div>
 
-                <div class="input-group">
-                    <label>HISTÓRICO / ORIGEM</label>
-                    <textarea id="historia" rows="3" placeholder="Ex: Ex-militar, Cientista da Vostok..."></textarea>
-                </div>
-
+            <div class="card">
+                <h2>ATRIBUTOS & NEX</h2>
                 <div class="attr-grid">
-                    <div class="attr-card">
-                        <label>SINCRONIA</label>
-                        <span class="attr-val" id="v-sinc">0</span>
+                    <div class="attr-box"><label>SINC</label><span class="attr-val" id="v-sinc">0</span>
                         <button class="btn-circle" onclick="add('sinc', -1)">-</button>
                         <button class="btn-circle" onclick="add('sinc', 1)">+</button>
                     </div>
-                    <div class="attr-card">
-                        <label>FREQUÊNCIA</label>
-                        <span class="attr-val" id="v-freq">0</span>
+                    <div class="attr-box"><label>FREQ</label><span class="attr-val" id="v-freq">0</span>
                         <button class="btn-circle" onclick="add('freq', -1)">-</button>
                         <button class="btn-circle" onclick="add('freq', 1)">+</button>
                     </div>
-                    <div class="attr-card">
-                        <label>INÉRCIA</label>
-                        <span class="attr-val" id="v-iner">0</span>
+                    <div class="attr-box"><label>INER</label><span class="attr-val" id="v-iner">0</span>
                         <button class="btn-circle" onclick="add('iner', -1)">-</button>
                         <button class="btn-circle" onclick="add('iner', 1)">+</button>
                     </div>
                 </div>
+                <label>NEX: <span id="nex-val" style="color:var(--neon-green)">5</span>%</label>
+                <input type="range" id="nex-range" min="0" max="100" step="5" value="5" oninput="updateNex()">
+            </div>
 
-                <div class="nex-selector">
-                    <label>NÍVEL DE EXPOSIÇÃO (NEX)</label>
-                    <input type="range" id="nex-range" min="5" max="100" step="5" value="5" oninput="updateNex()">
-                    <div class="nex-display">NEX <span id="nex-val">5</span>%</div>
+            <div class="card">
+                <h2>TREINAMENTO DE PERÍCIAS</h2>
+                <div class="pericia-grid">
+                    <div class="pericia-item"><span>Atletismo</span><button class="btn-pericia" onclick="ciclarPericia(this)">0</button></div>
+                    <div class="pericia-item"><span>Furtividade</span><button class="btn-pericia" onclick="ciclarPericia(this)">0</button></div>
+                    <div class="pericia-item"><span>Tecnologia</span><button class="btn-pericia" onclick="ciclarPericia(this)">0</button></div>
+                    <div class="pericia-item"><span>Vontade</span><button class="btn-pericia" onclick="ciclarPericia(this)">0</button></div>
+                    <div class="pericia-item"><span>Investigação</span><button class="btn-pericia" onclick="ciclarPericia(this)">0</button></div>
+                    <div class="pericia-item"><span>Luta</span><button class="btn-pericia" onclick="ciclarPericia(this)">0</button></div>
                 </div>
+            </div>
 
-                <button class="btn-main" onclick="salvar()">Sincronizar com o C.R.I.S.</button>
+            <button class="btn-main" onclick="salvar()">ATUALIZAR REGISTRO</button>
+        </section>
+
+        <section id="guia" class="page">
+            <div class="card">
+                <h2>REGRAS DO MUNDO</h2>
+                <p>O <strong>NEX</strong> representa o quão exposto você está à realidade distorcida. Quanto maior, mais poder você tem, mas menor é sua humanidade.</p>
+                <p><strong>Bônus de Perícia:</strong></p>
+                <ul>
+                    <li style="color:var(--neon-green)">+5: Treinado</li>
+                    <li style="color:var(--blue)">+10: Veterano</li>
+                    <li style="color:var(--purple)">+15: Expert</li>
+                    <li style="color:var(--orange)">+20: Mundial</li>
+                </ul>
             </div>
         </section>
 
     </div>
 
     <script>
-        let personagem = {
-            nome: "", historia: "", sinc: 0, freq: 0, iner: 0, nex: 5
+        const classesInfo = {
+            tatico: "Focado em combate bruto e resistência. Recebe +5 de vida por nível de NEX e pode usar armas pesadas sem penalidade de movimento.",
+            sintonizador: "Capaz de ouvir e manipular os 'Echos'. Pode gastar pontos de Sincronia para atravessar paredes ou ver o rastro de criaturas.",
+            especialista: "Mestre em dispositivos e decodificação. Consegue hackear a própria realidade para criar itens temporários ou desativar rituais eletrônicos."
         };
+
+        function atualizarClasse() {
+            const c = document.getElementById('classe').value;
+            document.getElementById('desc-classe').innerText = classesInfo[c] || "Selecione uma classe para ver as diretrizes.";
+        }
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -178,38 +193,19 @@
         }
 
         function add(attr, val) {
-            personagem[attr] += val;
-            if(personagem[attr] < 0) personagem[attr] = 0;
-            document.getElementById('v-' + attr).innerText = personagem[attr];
+            const el = document.getElementById('v-' + attr);
+            let n = parseInt(el.innerText) + val;
+            if(n < 0) n = 0;
+            el.innerText = n;
         }
 
         function updateNex() {
-            const val = document.getElementById('nex-range').value;
-            document.getElementById('nex-val').innerText = val;
-            personagem.nex = val;
+            const v = document.getElementById('nex-range').value;
+            document.getElementById('nex-val').innerText = v;
         }
 
-        function salvar() {
-            personagem.nome = document.getElementById('nome').value;
-            personagem.historia = document.getElementById('historia').value;
-            localStorage.setItem('dadosAgente', JSON.stringify(personagem));
-            alert("SISTEMA C.R.I.S.: Agente " + personagem.nome + " catalogado com sucesso.");
-        }
-
-        // Carregar dados
-        window.onload = () => {
-            const save = localStorage.getItem('dadosAgente');
-            if(save) {
-                personagem = JSON.parse(save);
-                document.getElementById('nome').value = personagem.nome;
-                document.getElementById('historia').value = personagem.historia;
-                document.getElementById('nex-range').value = personagem.nex;
-                document.getElementById('nex-val').innerText = personagem.nex;
-                document.getElementById('v-sinc').innerText = personagem.sinc;
-                document.getElementById('v-freq').innerText = personagem.freq;
-                document.getElementById('v-iner').innerText = personagem.iner;
-            }
-        }
-    </script>
-</body>
-</html>
+        function ciclarPericia(btn) {
+            const valores = [0, 5, 10, 15, 20];
+            let atual = parseInt(btn.innerText);
+            let index = (valores.indexOf(atual) + 1) % valores.length;
+            let novo = valores[index];
