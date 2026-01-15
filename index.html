@@ -3,162 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D.E.R. // TERMINAL DE ACESSO</title>
+    <title>D.E.R. // DATABASE AGENTES</title>
     <style>
+        :root {
+            --neon-green: #33ff66;
+            --dark-bg: #050505;
+            --panel-bg: #111;
+        }
+
         body {
-            background-color: #0a0a0a;
-            color: #e0e0e0;
-            font-family: 'Courier New', Courier, monospace;
-            margin: 0;
+            background-color: var(--dark-bg);
+            color: #ccc;
+            font-family: 'Courier New', monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
-            border-top: 4px solid #33ff66;
+            padding: 20px;
+            margin: 0;
         }
 
-        header {
+        .terminal-header {
+            border-bottom: 2px solid var(--neon-green);
             width: 100%;
-            padding: 20px;
+            max-width: 800px;
+            padding: 10px;
             text-align: center;
-            background: linear-gradient(to bottom, #1a1a1a, #0a0a0a);
-            border-bottom: 1px solid #333;
-        }
-
-        .status-bar {
-            color: #33ff66;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-        }
-
-        .container {
-            max-width: 900px;
-            width: 90%;
-            margin-top: 40px;
-        }
-
-        .card {
-            background: rgba(20, 20, 20, 0.9);
-            border: 1px solid #333;
-            padding: 20px;
             margin-bottom: 20px;
-            position: relative;
-        }
-
-        .card::before {
-            content: "ID: 099-B";
-            position: absolute;
-            top: -10px;
-            right: 10px;
-            background: #33ff66;
-            color: #000;
-            font-size: 10px;
-            padding: 2px 5px;
-        }
-
-        h1, h2 {
-            color: #33ff66;
             text-transform: uppercase;
         }
 
-        .glitch {
-            text-shadow: 2px 0 #ff0000, -2px 0 #0000ff;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        nav a {
-            color: #33ff66;
-            text-decoration: none;
-            border: 1px solid #33ff66;
-            padding: 5px 15px;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            background: #33ff66;
-            color: #000;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        .data-table th, .data-table td {
+        .ficha-container {
+            background: var(--panel-bg);
             border: 1px solid #333;
-            padding: 10px;
-            text-align: left;
-        }
-
-        .data-table th {
-            color: #33ff66;
-        }
-
-        footer {
-            margin-top: 50px;
+            width: 100%;
+            max-width: 800px;
             padding: 20px;
-            font-size: 0.7rem;
-            color: #555;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .ficha-container::after {
+            content: "CLASSIFIED";
+            position: absolute;
+            top: 10px; right: 10px;
+            color: rgba(255, 0, 0, 0.3);
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            padding: 5px;
+            transform: rotate(15deg);
+        }
+
+        .section-title {
+            color: var(--neon-green);
+            border-left: 5px solid var(--neon-green);
+            padding-left: 10px;
+            margin: 20px 0 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        label { display: block; font-size: 0.8rem; margin-bottom: 5px; color: #888; }
+
+        input, select {
+            background: #000;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Atributos Estilo CRIS */
+        .attr-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .attr-box {
+            background: #1a1a1a;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .attr-value {
+            font-size: 2rem;
+            color: var(--neon-green);
+            margin: 10px 0;
+        }
+
+        .btn-small {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-small:hover { background: var(--neon-green); color: black; }
+
+        .btn-save {
+            background: var(--neon-green);
+            color: black;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            margin-top: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 2px;
+        }
+
+        .btn-save:hover { background: white; }
+
+        /* Barras de Status */
+        .status-bar-container {
+            margin-top: 10px;
+            background: #222;
+            height: 10px;
+            width: 100%;
+        }
+
+        .status-fill {
+            background: var(--neon-green);
+            height: 100%;
+            width: 50%;
+            transition: 0.5s;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="status-bar">SISTEMA OPERACIONAL D.E.R. v4.0.2 - CONEXÃO SEGURA</div>
-        <h1 class="glitch">PROJETO ECHO</h1>
-        <nav>
-            <ul>
-                <li><a href="#">ARQUIVOS</a></li>
-                <li><a href="#">AGENTES</a></li>
-                <li><a href="#">BESTIÁRIO</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="container">
-        <section class="card">
-            <h2>RESUMO DA MISSÃO: "O SILÊNCIO BRANCO"</h2>
-            <p><strong>LOCAL:</strong> Antártida - Estação de Pesquisa Vostok.</p>
-            <p><strong>OBJETIVO:</strong> Investigar flutuação temporal na frequência 440Hz. Relatos de pesquisadores que viram a si mesmos caminhando do lado de fora da estação antes mesmo de chegarem ao local.</p>
-            <p><em>Cuidado: Echos de classe C são capazes de interação física limitada.</em></p>
-        </section>
-
-        <section class="card">
-            <h2>SISTEMA DE REGRAS RÁPIDO</h2>
-            <table class="data-table">
-                <tr>
-                    <th>Atributo</th>
-                    <th>Função no Jogo</th>
-                </tr>
-                <tr>
-                    <td>Sincronia</td>
-                    <td>Resistência mental e conexão com o Echo.</td>
-                </tr>
-                <tr>
-                    <td>Frequência</td>
-                    <td>Capacidade de perceber anomalias invisíveis.</td>
-                </tr>
-                <tr>
-                    <td>Inércia</td>
-                    <td>Força física e combate direto.</td>
-                </tr>
-            </table>
-        </section>
+    <div class="terminal-header">
+        <h1>SISTEMA DE ARQUIVOS D.E.R.</h1>
+        <small>DATABASE DE AGENTES // PROJETO ECHO</small>
     </div>
 
-    <footer>
-        [ACESSO RESTRITO À CLASSIFICAÇÃO NÍVEL 4] <br>
-        &copy; 2026 DIVISÃO DE ESTABILIZAÇÃO DE REALIDADE.
-    </footer>
+    <div class="ficha-container">
+        <div class="section-title">IDENTIFICAÇÃO DO AGENTE</div>
+        <div class="input-row">
+            <div>
+                <label>NOME COMPLETO</label>
+                <input type="text" id="nome" placeholder="Nome do Agente...">
+            </div>
+            <div>
+                <label>ESPECIALIDADE</label>
+                <select id="especialidade">
+                    <option value="Combate">Tático de Combate</option>
+                    <option value="Ocultista">Sintonizador de Echos</option>
+                    <option value="Infiltrador">Infiltrador de Realidade</option>
+                </select>
+            </div>
+        </div>
 
+        <div class="section-title">ATRIBUTOS DE CAMPO</div>
+        <div class="attr-grid">
+            <div class="attr-box">
+                <label>SINCRONIA</label>
+                <div class="attr-value" id="val-sinc">1</div>
+                <button class="btn-small" onclick="mudarAttr('sinc', -1)">-</button>
+                <button class="btn-small" onclick="mudarAttr('sinc', 1)">+</button>
+            </div>
+            <div class="attr-box">
+                <label>FREQUÊNCIA</label>
+                <div class="attr-value" id="val-freq">1</div>
+                <button class="btn-small" onclick="mudarAttr('freq', -1)">-</button>
+                <button class="btn-small" onclick="mudarAttr('freq', 1)">+</button>
+            </div>
+            <div class="attr-box">
+                <label>INÉRCIA</label>
+                <div class="attr-value" id="val-iner">1</div>
+                <button class="btn-small" onclick="mudarAttr('iner', -1)">-</button>
+                <button class="btn-small" onclick="mudarAttr('iner', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="section-title">ESTABILIDADE DO NEX (Nível de Exposição)</div>
+        <div class="status-bar-container">
+            <div id="estabilidade-bar" class="status-fill"></div>
+        </div>
+        <small id="estabilidade-texto" style="color: var(--neon-green);">Estabilidade: 50%</small>
+
+        <button class="btn-save" onclick="salvarFicha()">ATUALIZAR BANCO DE DADOS</button>
+    </div>
+
+    <script>
+        // Dados iniciais
+        let ficha = {
+            nome: "",
+            especialidade: "Combate",
+            sinc: 1,
+            freq: 1,
+            iner: 1
+        };
+
+        // Carregar dados salvos ao abrir a página
+        window.onload = function() {
+            const dadosSalvos = localStorage.getItem('fichaRPG');
+            if (dadosSalvos) {
+                ficha = JSON.parse(dadosSalvos);
+                document.getElementById('nome').value = ficha.nome;
+                document.getElementById('especialidade').value = ficha.especialidade;
+                atualizarTela();
+            }
+        };
+
+        function mudarAttr(attr, valor) {
+            ficha[attr] += valor;
+            if (ficha[attr] < 0) ficha[attr] = 0;
+            atualizarTela();
+        }
+
+        function atualizarTela() {
+            document.getElementById('val-sinc').innerText = ficha.sinc;
+            document.getElementById('val-freq').innerText = ficha.freq;
+            document.getElementById('val-iner').innerText = ficha.iner;
+
+            // Cálculo visual de estabilidade
+            let total = (ficha.sinc + ficha.freq + ficha.iner) * 5;
+            if (total > 100) total = 100;
+            document.getElementById('estabilidade-bar').style.width = total + "%";
+            document.getElementById('estabilidade-texto').innerText = "Estabilidade da Realidade: " + total + "%";
+        }
+
+        function salvarFicha() {
+            ficha.nome = document.getElementById('nome').value;
+            ficha.especialidade = document.getElementById('especialidade').value;
+            
+            // Salva no navegador do usuário
+            localStorage.setItem('fichaRPG', JSON.stringify(ficha));
+            
+            alert("SISTEMA: Dados sincronizados com o servidor D.E.R.");
+        }
+    </script>
 </body>
 </html>
