@@ -3,244 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D.E.R. // DATABASE AGENTES</title>
+    <title>C.R.I.S. // PROJETO ECHO</title>
     <style>
         :root {
             --neon-green: #33ff66;
-            --dark-bg: #050505;
-            --panel-bg: #111;
+            --dark-bg: #080808;
+            --panel-bg: #121212;
+            --border-color: #222;
         }
 
         body {
             background-color: var(--dark-bg);
-            color: #ccc;
+            color: #eee;
             font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-            margin: 0;
         }
 
-        .terminal-header {
-            border-bottom: 2px solid var(--neon-green);
+        /* Menu Superior Estilo C.R.I.S */
+        nav {
             width: 100%;
-            max-width: 800px;
-            padding: 10px;
-            text-align: center;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-
-        .ficha-container {
-            background: var(--panel-bg);
-            border: 1px solid #333;
-            width: 100%;
-            max-width: 800px;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            position: relative;
-        }
-
-        .ficha-container::after {
-            content: "CLASSIFIED";
-            position: absolute;
-            top: 10px; right: 10px;
-            color: rgba(255, 0, 0, 0.3);
-            border: 2px solid rgba(255, 0, 0, 0.3);
-            padding: 5px;
-            transform: rotate(15deg);
-        }
-
-        .section-title {
-            color: var(--neon-green);
-            border-left: 5px solid var(--neon-green);
-            padding-left: 10px;
-            margin: 20px 0 15px 0;
-            font-size: 1.2rem;
-        }
-
-        .input-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 15px;
-        }
-
-        label { display: block; font-size: 0.8rem; margin-bottom: 5px; color: #888; }
-
-        input, select {
             background: #000;
-            border: 1px solid #444;
-            color: #fff;
-            padding: 8px;
-            width: 100%;
-            box-sizing: border-box;
+            border-bottom: 1px solid var(--neon-green);
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        /* Atributos Estilo CRIS */
-        .attr-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .attr-box {
-            background: #1a1a1a;
-            padding: 15px;
-            text-align: center;
-            border: 1px solid #333;
-        }
-
-        .attr-value {
-            font-size: 2rem;
-            color: var(--neon-green);
-            margin: 10px 0;
-        }
-
-        .btn-small {
-            background: #333;
-            color: white;
+        nav button {
+            background: none;
             border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-small:hover { background: var(--neon-green); color: black; }
-
-        .btn-save {
-            background: var(--neon-green);
-            color: black;
-            border: none;
-            padding: 15px;
-            width: 100%;
-            margin-top: 30px;
+            color: #666;
+            font-family: 'Courier New', monospace;
             font-weight: bold;
             cursor: pointer;
-            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 1rem;
+            transition: 0.3s;
         }
 
-        .btn-save:hover { background: white; }
+        nav button.active { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
 
-        /* Barras de Status */
-        .status-bar-container {
-            margin-top: 10px;
-            background: #222;
-            height: 10px;
-            width: 100%;
+        .container { width: 90%; max-width: 900px; padding: 40px 0; }
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.5s; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .card { background: var(--panel-bg); border: 1px solid var(--border-color); padding: 30px; position: relative; }
+        h1, h2 { color: var(--neon-green); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Guia de Classes */
+        .class-box { border: 1px solid #333; padding: 15px; margin-bottom: 15px; border-left: 4px solid var(--neon-green); }
+        .class-box h3 { margin-top: 0; color: #fff; }
+
+        /* Ficha e Criação */
+        .input-group { margin-bottom: 20px; }
+        label { display: block; color: var(--neon-green); font-size: 0.8rem; margin-bottom: 5px; }
+        input, select, textarea { 
+            background: #000; border: 1px solid #444; color: #fff; padding: 12px; width: 100%; box-sizing: border-box; 
         }
 
-        .status-fill {
-            background: var(--neon-green);
-            height: 100%;
-            width: 50%;
-            transition: 0.5s;
+        .attr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0; }
+        .attr-card { background: #1a1a1a; padding: 15px; text-align: center; border: 1px solid #333; }
+        .attr-val { font-size: 2.5rem; color: var(--neon-green); display: block; margin: 10px 0; }
+        
+        .btn-circle { 
+            background: #333; color: #fff; border: none; width: 30px; height: 30px; cursor: pointer; border-radius: 50%;
+        }
+        .btn-circle:hover { background: var(--neon-green); color: #000; }
+
+        .nex-selector { margin-top: 20px; }
+        .nex-display { font-size: 1.5rem; color: var(--neon-green); font-weight: bold; }
+
+        .btn-main {
+            background: var(--neon-green); color: #000; border: none; padding: 15px; width: 100%; 
+            font-weight: bold; cursor: pointer; margin-top: 20px; text-transform: uppercase;
         }
     </style>
 </head>
 <body>
 
-    <div class="terminal-header">
-        <h1>SISTEMA DE ARQUIVOS D.E.R.</h1>
-        <small>DATABASE DE AGENTES // PROJETO ECHO</small>
-    </div>
+    <nav>
+        <button id="btn-guia" class="active" onclick="showPage('guia')">Diretrizes (Classes)</button>
+        <button id="btn-ficha" onclick="showPage('ficha')">Terminal de Agente</button>
+    </nav>
 
-    <div class="ficha-container">
-        <div class="section-title">IDENTIFICAÇÃO DO AGENTE</div>
-        <div class="input-row">
-            <div>
-                <label>NOME COMPLETO</label>
-                <input type="text" id="nome" placeholder="Nome do Agente...">
+    <div class="container">
+        
+        <section id="guia" class="page active">
+            <h1>DIRETRIZES DA D.E.R.</h1>
+            <p>Selecione sua especialização para lidar com os Echos de realidade.</p>
+            
+            <div class="class-box">
+                <h3>TÁTICO DE ASSALTO</h3>
+                <p>Especialistas em combate direto e supressão de ameaças físicas. Possuem bônus em <strong>Inércia</strong> e proteção pesada.</p>
             </div>
-            <div>
-                <label>ESPECIALIDADE</label>
-                <select id="especialidade">
-                    <option value="Combate">Tático de Combate</option>
-                    <option value="Ocultista">Sintonizador de Echos</option>
-                    <option value="Infiltrador">Infiltrador de Realidade</option>
-                </select>
-            </div>
-        </div>
 
-        <div class="section-title">ATRIBUTOS DE CAMPO</div>
-        <div class="attr-grid">
-            <div class="attr-box">
-                <label>SINCRONIA</label>
-                <div class="attr-value" id="val-sinc">1</div>
-                <button class="btn-small" onclick="mudarAttr('sinc', -1)">-</button>
-                <button class="btn-small" onclick="mudarAttr('sinc', 1)">+</button>
+            <div class="class-box">
+                <h3>SINTONIZADOR DE ECHO</h3>
+                <p>Agentes sensíveis a distorções. Conseguem manipular a <strong>Frequência</strong> para prever ataques ou estabilizar fendas.</p>
             </div>
-            <div class="attr-box">
-                <label>FREQUÊNCIA</label>
-                <div class="attr-value" id="val-freq">1</div>
-                <button class="btn-small" onclick="mudarAttr('freq', -1)">-</button>
-                <button class="btn-small" onclick="mudarAttr('freq', 1)">+</button>
-            </div>
-            <div class="attr-box">
-                <label>INÉRCIA</label>
-                <div class="attr-value" id="val-iner">1</div>
-                <button class="btn-small" onclick="mudarAttr('iner', -1)">-</button>
-                <button class="btn-small" onclick="mudarAttr('iner', 1)">+</button>
-            </div>
-        </div>
 
-        <div class="section-title">ESTABILIDADE DO NEX (Nível de Exposição)</div>
-        <div class="status-bar-container">
-            <div id="estabilidade-bar" class="status-fill"></div>
-        </div>
-        <small id="estabilidade-texto" style="color: var(--neon-green);">Estabilidade: 50%</small>
+            <div class="class-box">
+                <h3>ESPECIALISTA EM TECNOLOGIA</h3>
+                <p>Focados em decodificar sinais e usar equipamentos de ponta. Alta <strong>Sincronia</strong> com sistemas digitais e mecânicos.</p>
+            </div>
+        </section>
 
-        <button class="btn-save" onclick="salvarFicha()">ATUALIZAR BANCO DE DADOS</button>
+        <section id="ficha" class="page">
+            <div class="card">
+                <h2>CRIAÇÃO DE AGENTE</h2>
+                
+                <div class="input-group">
+                    <label>NOME DO PERSONAGEM / CODINOME</label>
+                    <input type="text" id="nome" placeholder="Digite o nome...">
+                </div>
+
+                <div class="input-group">
+                    <label>HISTÓRICO / ORIGEM</label>
+                    <textarea id="historia" rows="3" placeholder="Ex: Ex-militar, Cientista da Vostok..."></textarea>
+                </div>
+
+                <div class="attr-grid">
+                    <div class="attr-card">
+                        <label>SINCRONIA</label>
+                        <span class="attr-val" id="v-sinc">0</span>
+                        <button class="btn-circle" onclick="add('sinc', -1)">-</button>
+                        <button class="btn-circle" onclick="add('sinc', 1)">+</button>
+                    </div>
+                    <div class="attr-card">
+                        <label>FREQUÊNCIA</label>
+                        <span class="attr-val" id="v-freq">0</span>
+                        <button class="btn-circle" onclick="add('freq', -1)">-</button>
+                        <button class="btn-circle" onclick="add('freq', 1)">+</button>
+                    </div>
+                    <div class="attr-card">
+                        <label>INÉRCIA</label>
+                        <span class="attr-val" id="v-iner">0</span>
+                        <button class="btn-circle" onclick="add('iner', -1)">-</button>
+                        <button class="btn-circle" onclick="add('iner', 1)">+</button>
+                    </div>
+                </div>
+
+                <div class="nex-selector">
+                    <label>NÍVEL DE EXPOSIÇÃO (NEX)</label>
+                    <input type="range" id="nex-range" min="5" max="100" step="5" value="5" oninput="updateNex()">
+                    <div class="nex-display">NEX <span id="nex-val">5</span>%</div>
+                </div>
+
+                <button class="btn-main" onclick="salvar()">Sincronizar com o C.R.I.S.</button>
+            </div>
+        </section>
+
     </div>
 
     <script>
-        // Dados iniciais
-        let ficha = {
-            nome: "",
-            especialidade: "Combate",
-            sinc: 1,
-            freq: 1,
-            iner: 1
+        let personagem = {
+            nome: "", historia: "", sinc: 0, freq: 0, iner: 0, nex: 5
         };
 
-        // Carregar dados salvos ao abrir a página
-        window.onload = function() {
-            const dadosSalvos = localStorage.getItem('fichaRPG');
-            if (dadosSalvos) {
-                ficha = JSON.parse(dadosSalvos);
-                document.getElementById('nome').value = ficha.nome;
-                document.getElementById('especialidade').value = ficha.especialidade;
-                atualizarTela();
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.getElementById('btn-' + id).classList.add('active');
+        }
+
+        function add(attr, val) {
+            personagem[attr] += val;
+            if(personagem[attr] < 0) personagem[attr] = 0;
+            document.getElementById('v-' + attr).innerText = personagem[attr];
+        }
+
+        function updateNex() {
+            const val = document.getElementById('nex-range').value;
+            document.getElementById('nex-val').innerText = val;
+            personagem.nex = val;
+        }
+
+        function salvar() {
+            personagem.nome = document.getElementById('nome').value;
+            personagem.historia = document.getElementById('historia').value;
+            localStorage.setItem('dadosAgente', JSON.stringify(personagem));
+            alert("SISTEMA C.R.I.S.: Agente " + personagem.nome + " catalogado com sucesso.");
+        }
+
+        // Carregar dados
+        window.onload = () => {
+            const save = localStorage.getItem('dadosAgente');
+            if(save) {
+                personagem = JSON.parse(save);
+                document.getElementById('nome').value = personagem.nome;
+                document.getElementById('historia').value = personagem.historia;
+                document.getElementById('nex-range').value = personagem.nex;
+                document.getElementById('nex-val').innerText = personagem.nex;
+                document.getElementById('v-sinc').innerText = personagem.sinc;
+                document.getElementById('v-freq').innerText = personagem.freq;
+                document.getElementById('v-iner').innerText = personagem.iner;
             }
-        };
-
-        function mudarAttr(attr, valor) {
-            ficha[attr] += valor;
-            if (ficha[attr] < 0) ficha[attr] = 0;
-            atualizarTela();
-        }
-
-        function atualizarTela() {
-            document.getElementById('val-sinc').innerText = ficha.sinc;
-            document.getElementById('val-freq').innerText = ficha.freq;
-            document.getElementById('val-iner').innerText = ficha.iner;
-
-            // Cálculo visual de estabilidade
-            let total = (ficha.sinc + ficha.freq + ficha.iner) * 5;
-            if (total > 100) total = 100;
-            document.getElementById('estabilidade-bar').style.width = total + "%";
-            document.getElementById('estabilidade-texto').innerText = "Estabilidade da Realidade: " + total + "%";
-        }
-
-        function salvarFicha() {
-            ficha.nome = document.getElementById('nome').value;
-            ficha.especialidade = document.getElementById('especialidade').value;
-            
-            // Salva no navegador do usuário
-            localStorage.setItem('fichaRPG', JSON.stringify(ficha));
-            
-            alert("SISTEMA: Dados sincronizados com o servidor D.E.R.");
         }
     </script>
 </body>
