@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C.R.I.S. // INTERFACE DE AGENTE</title>
+    <title>C.R.I.S. // SISTEMA D.E.R.</title>
     <style>
         :root {
             --neon-green: #33ff66;
@@ -18,155 +18,130 @@
             background-color: var(--dark-bg);
             color: #eee;
             font-family: 'Courier New', monospace;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center;
         }
 
+        /* Menu de Navegação */
         nav {
-            width: 100%;
-            background: #000;
-            border-bottom: 1px solid var(--neon-green);
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            width: 100%; background: #000; border-bottom: 2px solid var(--neon-green);
+            display: flex; justify-content: center; gap: 20px; padding: 15px 0;
+            position: sticky; top: 0; z-index: 999;
         }
 
         nav button {
-            background: none; border: none; color: #666;
-            cursor: pointer; text-transform: uppercase; font-weight: bold;
+            background: none; border: 1px solid #333; color: #666;
+            padding: 8px 15px; cursor: pointer; text-transform: uppercase; font-weight: bold;
         }
 
-        nav button.active { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
+        nav button.active { color: var(--neon-green); border-color: var(--neon-green); box-shadow: 0 0 10px rgba(51, 255, 102, 0.3); }
 
-        .container { width: 95%; max-width: 900px; padding: 20px 0; }
+        .container { width: 95%; max-width: 800px; padding: 20px; }
+        
+        /* Sistema de Abas */
         .page { display: none; }
         .page.active { display: block; }
 
         .card { background: var(--panel-bg); border: 1px solid #222; padding: 20px; margin-bottom: 20px; }
-        h2 { color: var(--neon-green); border-bottom: 1px solid #333; padding-bottom: 5px; font-size: 1.2rem; }
+        h2 { color: var(--neon-green); border-bottom: 1px solid #333; padding-bottom: 5px; margin-top: 0; }
 
-        label { display: block; color: var(--neon-green); font-size: 0.7rem; margin-bottom: 5px; margin-top: 10px; }
-        input, select, textarea { 
-            background: #000; border: 1px solid #333; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; 
-        }
+        label { display: block; color: var(--neon-green); font-size: 0.8rem; margin: 10px 0 5px 0; }
+        input, select { background: #000; border: 1px solid #333; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; }
 
         /* Descrição da Classe */
         #desc-classe {
-            background: #0a0a0a;
-            padding: 15px;
-            border: 1px dashed #444;
-            margin-top: 10px;
-            font-size: 0.85rem;
-            line-height: 1.4;
-            color: #bbb;
+            background: #000; padding: 15px; border: 1px dashed var(--neon-green);
+            margin-top: 15px; font-size: 0.9rem; color: #bbb; min-height: 50px;
         }
-
-        /* Atributos */
-        .attr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0; }
-        .attr-box { background: #1a1a1a; padding: 10px; text-align: center; border: 1px solid #333; }
-        .attr-val { font-size: 1.8rem; color: var(--neon-green); display: block; }
 
         /* Perícias */
-        .pericia-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .pericia-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
         .pericia-item { 
             display: flex; justify-content: space-between; align-items: center; 
-            background: #0a0a0a; padding: 8px 12px; border: 1px solid #222;
+            background: #0a0a0a; padding: 10px; border: 1px solid #222;
         }
         .btn-pericia {
-            border: 1px solid #444; background: none; color: #666; 
-            padding: 5px 10px; cursor: pointer; min-width: 45px; font-weight: bold;
+            background: #222; border: 1px solid #444; color: #888; 
+            padding: 5px; width: 50px; cursor: pointer; font-weight: bold; text-align: center;
         }
         
-        /* Cores das Perícias */
+        /* Cores das Perícias (Estilo CRIS) */
         .p-5 { color: var(--neon-green) !important; border-color: var(--neon-green) !important; }
         .p-10 { color: var(--blue) !important; border-color: var(--blue) !important; }
         .p-15 { color: var(--purple) !important; border-color: var(--purple) !important; }
         .p-20 { color: var(--orange) !important; border-color: var(--orange) !important; }
 
-        .btn-main {
-            background: var(--neon-green); color: #000; border: none; padding: 15px; width: 100%; 
-            font-weight: bold; cursor: pointer; margin-top: 20px;
-        }
-
-        .btn-circle { background: #333; color: #fff; border: none; width: 25px; height: 25px; cursor: pointer; }
+        .attr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0; }
+        .attr-box { background: #1a1a1a; padding: 10px; text-align: center; border: 1px solid #333; }
+        .attr-val { font-size: 2rem; color: var(--neon-green); display: block; }
+        .btn-plus { background: #333; color: white; border: none; width: 30px; height: 30px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <nav>
-        <button id="btn-ficha" class="active" onclick="showPage('ficha')">TERMINAL DE AGENTE</button>
-        <button id="btn-guia" onclick="showPage('guia')">MANUAL D.E.R.</button>
+        <button id="nav-ficha" class="active" onclick="mudarAba('ficha')">TERMINAL</button>
+        <button id="nav-guia" onclick="mudarAba('guia')">MANUAL</button>
     </nav>
 
     <div class="container">
         
-        <section id="ficha" class="page active">
+        <section id="aba-ficha" class="page active">
             <div class="card">
-                <h2>IDENTIFICAÇÃO</h2>
+                <h2>REGISTRO</h2>
                 <label>NOME DO AGENTE</label>
-                <input type="text" id="nome" placeholder="NOME/CODINOME">
+                <input type="text" id="nome-agente" placeholder="Digite o nome...">
                 
                 <label>CLASSE OPERACIONAL</label>
-                <select id="classe" onchange="atualizarClasse()">
-                    <option value="nenhuma">Selecione uma classe...</option>
+                <select id="select-classe" onchange="mostrarDescricao()">
+                    <option value="">Selecione...</option>
                     <option value="tatico">Tático de Assalto</option>
                     <option value="sintonizador">Sintonizador de Echo</option>
                     <option value="especialista">Especialista Tecnológico</option>
                 </select>
-                <div id="desc-classe">Selecione uma classe para ver as diretrizes.</div>
+                <div id="desc-classe">Aguardando seleção de classe...</div>
             </div>
 
             <div class="card">
                 <h2>ATRIBUTOS & NEX</h2>
                 <div class="attr-grid">
-                    <div class="attr-box"><label>SINC</label><span class="attr-val" id="v-sinc">0</span>
-                        <button class="btn-circle" onclick="add('sinc', -1)">-</button>
-                        <button class="btn-circle" onclick="add('sinc', 1)">+</button>
+                    <div class="attr-box"><label>SINC</label><span class="attr-val" id="val-sinc">0</span>
+                        <button class="btn-plus" onclick="ajustar('sinc', 1)">+</button>
                     </div>
-                    <div class="attr-box"><label>FREQ</label><span class="attr-val" id="v-freq">0</span>
-                        <button class="btn-circle" onclick="add('freq', -1)">-</button>
-                        <button class="btn-circle" onclick="add('freq', 1)">+</button>
+                    <div class="attr-box"><label>FREQ</label><span class="attr-val" id="val-freq">0</span>
+                        <button class="btn-plus" onclick="ajustar('freq', 1)">+</button>
                     </div>
-                    <div class="attr-box"><label>INER</label><span class="attr-val" id="v-iner">0</span>
-                        <button class="btn-circle" onclick="add('iner', -1)">-</button>
-                        <button class="btn-circle" onclick="add('iner', 1)">+</button>
+                    <div class="attr-box"><label>INER</label><span class="attr-val" id="val-iner">0</span>
+                        <button class="btn-plus" onclick="ajustar('iner', 1)">+</button>
                     </div>
                 </div>
-                <label>NEX: <span id="nex-val" style="color:var(--neon-green)">5</span>%</label>
-                <input type="range" id="nex-range" min="0" max="100" step="5" value="5" oninput="updateNex()">
+                <label>NEX: <span id="display-nex">5</span>%</label>
+                <input type="range" min="0" max="100" step="5" value="5" oninput="document.getElementById('display-nex').innerText = this.value">
             </div>
 
             <div class="card">
-                <h2>TREINAMENTO DE PERÍCIAS</h2>
+                <h2>PERÍCIAS</h2>
                 <div class="pericia-grid">
-                    <div class="pericia-item"><span>Atletismo</span><button class="btn-pericia" onclick="ciclarPericia(this)">0</button></div>
-                    <div class="pericia-item"><span>Furtividade</span><button class="btn-pericia" onclick="ciclarPericia(this)">0</button></div>
-                    <div class="pericia-item"><span>Tecnologia</span><button class="btn-pericia" onclick="ciclarPericia(this)">0</button></div>
-                    <div class="pericia-item"><span>Vontade</span><button class="btn-pericia" onclick="ciclarPericia(this)">0</button></div>
-                    <div class="pericia-item"><span>Investigação</span><button class="btn-pericia" onclick="ciclarPericia(this)">0</button></div>
-                    <div class="pericia-item"><span>Luta</span><button class="btn-pericia" onclick="ciclarPericia(this)">0</button></div>
+                    <div class="pericia-item"><span>Atletismo</span><button class="btn-pericia" onclick="upPericia(this)">0</button></div>
+                    <div class="pericia-item"><span>Furtividade</span><button class="btn-pericia" onclick="upPericia(this)">0</button></div>
+                    <div class="pericia-item"><span>Tecnologia</span><button class="btn-pericia" onclick="upPericia(this)">0</button></div>
+                    <div class="pericia-item"><span>Vontade</span><button class="btn-pericia" onclick="upPericia(this)">0</button></div>
+                    <div class="pericia-item"><span>Luta</span><button class="btn-pericia" onclick="upPericia(this)">0</button></div>
+                    <div class="pericia-item"><span>Investigação</span><button class="btn-pericia" onclick="upPericia(this)">0</button></div>
                 </div>
             </div>
-
-            <button class="btn-main" onclick="salvar()">ATUALIZAR REGISTRO</button>
         </section>
 
-        <section id="guia" class="page">
+        <section id="aba-guia" class="page">
             <div class="card">
-                <h2>REGRAS DO MUNDO</h2>
-                <p>O <strong>NEX</strong> representa o quão exposto você está à realidade distorcida. Quanto maior, mais poder você tem, mas menor é sua humanidade.</p>
-                <p><strong>Bônus de Perícia:</strong></p>
+                <h2>DIRETRIZES D.E.R.</h2>
+                <p>O Manual de Campo contém as regras básicas do sistema ECHO.</p>
+                <p><strong>Cores de Perícia:</strong></p>
                 <ul>
-                    <li style="color:var(--neon-green)">+5: Treinado</li>
-                    <li style="color:var(--blue)">+10: Veterano</li>
-                    <li style="color:var(--purple)">+15: Expert</li>
-                    <li style="color:var(--orange)">+20: Mundial</li>
+                    <li style="color:var(--neon-green)">+5 (Treinado)</li>
+                    <li style="color:var(--blue)">+10 (Veterano)</li>
+                    <li style="color:var(--purple)">+15 (Expert)</li>
+                    <li style="color:var(--orange)">+20 (Mundial)</li>
                 </ul>
             </div>
         </section>
@@ -174,38 +149,8 @@
     </div>
 
     <script>
-        const classesInfo = {
-            tatico: "Focado em combate bruto e resistência. Recebe +5 de vida por nível de NEX e pode usar armas pesadas sem penalidade de movimento.",
-            sintonizador: "Capaz de ouvir e manipular os 'Echos'. Pode gastar pontos de Sincronia para atravessar paredes ou ver o rastro de criaturas.",
-            especialista: "Mestre em dispositivos e decodificação. Consegue hackear a própria realidade para criar itens temporários ou desativar rituais eletrônicos."
-        };
-
-        function atualizarClasse() {
-            const c = document.getElementById('classe').value;
-            document.getElementById('desc-classe').innerText = classesInfo[c] || "Selecione uma classe para ver as diretrizes.";
-        }
-
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.getElementById('btn-' + id).classList.add('active');
-        }
-
-        function add(attr, val) {
-            const el = document.getElementById('v-' + attr);
-            let n = parseInt(el.innerText) + val;
-            if(n < 0) n = 0;
-            el.innerText = n;
-        }
-
-        function updateNex() {
-            const v = document.getElementById('nex-range').value;
-            document.getElementById('nex-val').innerText = v;
-        }
-
-        function ciclarPericia(btn) {
-            const valores = [0, 5, 10, 15, 20];
-            let atual = parseInt(btn.innerText);
-            let index = (valores.indexOf(atual) + 1) % valores.length;
-            let novo = valores[index];
+        // Função para mudar de aba
+        function mudarAba(nome) {
+            // Esconde todas as páginas
+            document.getElementById('aba-ficha').classList.remove('active');
+            document
