@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>C.R.I.S. // DATABASE V12</title>
+    <title>C.R.I.S. // DATABASE V13</title>
     <style>
         :root { --green: #33ff66; --blue: #3399ff; --purple: #a033ff; --orange: #ff9933; --red: #ff4444; --bg: #050505; --gold: #ffd700; }
         html, body { min-height: 100vh; background: var(--bg); color: #eee; font-family: monospace; margin: 0; padding: 0; }
@@ -11,46 +11,56 @@
         .tela { display: none; width: 100%; }
         .active { display: block !important; }
 
-        /* BARRAS E STATUS */
+        /* TERMINAL DE DADOS */
+        #log-dados { position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.95); border: 2px solid var(--green); padding: 15px; z-index: 3000; border-radius: 8px; box-shadow: 0 0 20px var(--green); min-width: 150px; display: none; text-align: center; cursor: pointer; }
+
+        /* STATUS E BARRAS */
         .status-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .status-box { padding: 10px; border: 1px solid #222; background: #0a0a0a; border-radius: 4px; }
-        .status-inputs { display: flex; align-items: center; gap: 2px; justify-content: center; }
-        .status-inputs input { width: 40px; padding: 5px; text-align: center; font-weight: bold; border: none; background: #111; color: #fff; font-size: 1rem; }
+        .status-box { padding: 8px; border: 1px solid #222; background: #0a0a0a; border-radius: 4px; border-top: 3px solid #444; }
+        .status-inputs { display: flex; align-items: center; justify-content: center; gap: 2px; }
+        .status-inputs input { width: 35px; background: none; border: none; color: #fff; font-size: 1rem; font-weight: bold; text-align: center; }
         .bar-bg { width: 100%; height: 6px; background: #222; border-radius: 3px; margin-top: 5px; overflow: hidden; }
         .bar-fill { height: 100%; width: 100%; transition: width 0.4s ease; }
-        .fill-pv { background: var(--red); } .fill-san { background: var(--blue); } .fill-pe { background: var(--orange); }
+        
+        /* CORES DAS CLASSES E STATUS */
+        .box-pv { border-color: var(--red); } .fill-pv { background: var(--red); }
+        .box-san { border-color: var(--blue); } .fill-san { background: var(--blue); }
+        .box-pe { border-color: var(--orange); } .fill-pe { background: var(--orange); }
 
-        /* GRIMÓRIO / MAGIAS */
-        .spell-card { border: 1px solid #333; background: #0d0d0d; padding: 12px; margin-bottom: 10px; border-left: 4px solid var(--purple); }
-        .spell-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 5px; margin-bottom: 8px; }
-        .tag-pe { background: var(--orange); color: #000; padding: 2px 6px; font-size: 0.7rem; font-weight: bold; border-radius: 3px; }
-        .btn-cast { background: var(--purple); color: white; border: none; padding: 5px 10px; cursor: pointer; font-size: 0.7rem; font-weight: bold; }
-        .btn-cast:hover { filter: brightness(1.2); }
+        #info-buff { background: #001500; border: 1px solid var(--green); color: var(--green); padding: 10px; font-size: 0.7rem; margin-bottom: 15px; border-radius: 4px; }
 
-        /* GERAL */
-        nav { display: flex; gap: 5px; margin-bottom: 20px; position: sticky; top: 0; background: var(--bg); padding: 10px 0; z-index: 100; border-bottom: 1px solid #222; }
-        nav button { flex: 1; padding: 10px; background: #111; border: 1px solid #333; color: #888; cursor: pointer; font-size: 0.65rem; text-transform: uppercase; }
+        /* PERICIAS E LISTAS */
+        .p-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        .p-item { display: flex; justify-content: space-between; align-items: center; background: #0d0d0d; padding: 6px 10px; border: 1px solid #222; font-size: 0.7rem; }
+        .p-foco { border-color: var(--green); background: #001a00; }
+
+        .card { border: 1px solid #222; padding: 12px; margin-bottom: 8px; background: #0a0a0a; display: flex; justify-content: space-between; align-items: center; }
+        .spell-card { border-left: 4px solid var(--purple); background: #0d0d0d; padding: 10px; margin-bottom: 10px; border-top: 1px solid #222; border-right: 1px solid #222; border-bottom: 1px solid #222; }
+
+        /* BOTOES */
+        nav { display: flex; gap: 4px; margin-bottom: 15px; position: sticky; top: 0; background: var(--bg); padding: 10px 0; z-index: 100; }
+        nav button { flex: 1; padding: 10px 2px; background: #111; border: 1px solid #333; color: #777; cursor: pointer; font-size: 0.6rem; font-weight: bold; }
         nav button.active-nav { border-color: var(--green); color: var(--green); }
         
-        input, select, textarea { background: #000; color: #fff; border: 1px solid #444; padding: 12px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: monospace; }
-        button.principal { background: #111; border: 1px solid var(--green); color: var(--green); padding: 15px; cursor: pointer; width: 100%; font-weight: bold; text-transform: uppercase; }
-        .card { border: 1px solid #222; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; }
-
-        #log-dados { position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.9); border: 1px solid var(--green); padding: 15px; z-index: 2000; display: none; }
+        .btn-roll { background: none; border: 1px solid #444; color: var(--green); cursor: pointer; padding: 2px 6px; font-size: 0.7rem; }
+        button.principal { background: #111; border: 1px solid var(--green); color: var(--green); padding: 12px; cursor: pointer; width: 100%; font-weight: bold; margin-bottom: 10px; }
+        
+        input, select, textarea { background: #000; color: #fff; border: 1px solid #444; padding: 10px; width: 100%; box-sizing: border-box; margin-bottom: 8px; font-family: monospace; }
     </style>
 </head>
 <body>
 
     <div id="log-dados" onclick="this.style.display='none'">
-        <div id="roll-res" style="font-size: 1.8rem; font-weight: bold; color: #fff; text-align: center;"></div>
-        <div id="roll-det" style="font-size: 0.7rem; color: var(--green); text-align: center;"></div>
+        <div style="font-size: 0.6rem; color: var(--green);">TERMINAL_RESULT:</div>
+        <div id="roll-res" style="font-size: 1.8rem; font-weight: bold; color: #fff;">0</div>
+        <div id="roll-det" style="font-size: 0.7rem; color: #888;">d20</div>
     </div>
 
     <div class="container">
         <div id="tela-lista" class="tela active">
-            <h1 style="color: var(--green); text-align: center;">C.R.I.S. // ARCANE</h1>
+            <h1 style="color: var(--green); text-align: center;">C.R.I.S. V13</h1>
             <div id="lista-agentes"></div>
-            <button class="principal" onclick="novoAgente()">+ NOVO AGENTE</button>
+            <button class="principal" onclick="novoAgente()">+ RECRUTAR</button>
         </div>
 
         <div id="tela-agente" class="tela">
@@ -63,49 +73,50 @@
             </nav>
 
             <div id="aba-f" class="secao">
-                <input type="text" id="ag-nome" oninput="salvar()" placeholder="NOME">
+                <input type="text" id="ag-nome" oninput="salvar()" placeholder="CODINOME">
+                
+                <select id="ag-classe" onchange="aplicarClasse()">
+                    <option value="">Escolha a Classe...</option>
+                    <option value="tatico">Tático (+PV, Atletas, Luta)</option>
+                    <option value="sintonizador">Sintonizador (+SAN, Oculto, Vontade)</option>
+                    <option value="especialista">Especialista (+Perícias, Tecnol)</option>
+                </select>
+
+                <div id="info-buff">Selecione uma classe para ver os bônus.</div>
+
                 <div class="status-container">
-                    <div class="status-box">
+                    <div class="status-box box-pv">
                         <label style="color:var(--red); font-size:0.6rem;">PV</label>
-                        <div class="status-inputs"><input type="number" id="ag-pv" oninput="atualizarBarras()">/ <input type="number" id="ag-pvmax" oninput="atualizarBarras()"></div>
+                        <div class="status-inputs"><input type="number" id="ag-pv" oninput="atualizarBarras()">/<input type="number" id="ag-pvmax" oninput="atualizarBarras()"></div>
                         <div class="bar-bg"><div id="bar-pv" class="bar-fill fill-pv"></div></div>
                     </div>
-                    <div class="status-box">
+                    <div class="status-box box-san">
                         <label style="color:var(--blue); font-size:0.6rem;">SAN</label>
-                        <div class="status-inputs"><input type="number" id="ag-san" oninput="atualizarBarras()">/ <input type="number" id="ag-sanmax" oninput="atualizarBarras()"></div>
+                        <div class="status-inputs"><input type="number" id="ag-san" oninput="atualizarBarras()">/<input type="number" id="ag-sanmax" oninput="atualizarBarras()"></div>
                         <div class="bar-bg"><div id="bar-san" class="bar-fill fill-san"></div></div>
                     </div>
-                    <div class="status-box">
+                    <div class="status-box box-pe">
                         <label style="color:var(--orange); font-size:0.6rem;">PE</label>
-                        <div class="status-inputs"><input type="number" id="ag-pe" oninput="atualizarBarras()">/ <input type="number" id="ag-pemax" oninput="atualizarBarras()"></div>
+                        <div class="status-inputs"><input type="number" id="ag-pe" oninput="atualizarBarras()">/<input type="number" id="ag-pemax" oninput="atualizarBarras()"></div>
                         <div class="bar-bg"><div id="bar-pe" class="bar-fill fill-pe"></div></div>
                     </div>
                 </div>
-                <select id="ag-classe" onchange="salvar()"><option value="tatico">Tático</option><option value="sintonizador">Sintonizador</option><option value="especialista">Especialista</option></select>
-                <div id="grid-pericias" class="p-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;"></div>
+
+                <div class="p-grid" id="grid-pericias"></div>
             </div>
 
             <div id="aba-m" class="secao" style="display:none">
-                <h2>GRIMÓRIO DE MAGIAS</h2>
-                <div style="background: #0a0a0a; padding: 15px; border: 1px solid #333; margin-bottom: 20px;">
-                    <input type="text" id="mag-nome" placeholder="Nome da Magia">
-                    <div style="display:flex; gap:10px;">
-                        <input type="number" id="mag-custo" placeholder="Custo PE" style="width:100px;">
-                        <select id="mag-tipo">
-                            <option value="Morte">Morte (Preto)</option>
-                            <option value="Sangue">Sangue (Vermelho)</option>
-                            <option value="Energia">Energia (Roxo)</option>
-                            <option value="Conhecimento">Conhecimento (Dourado)</option>
-                        </select>
-                    </div>
-                    <textarea id="mag-desc" placeholder="Descrição da Magia..."></textarea>
-                    <button class="principal" onclick="addMagia()" style="border-color: var(--purple); color: var(--purple);">+ APRENDER MAGIA</button>
+                <div style="background:#0a0a0a; border:1px solid #333; padding:10px; margin-bottom:15px;">
+                    <input type="text" id="mag-nome" placeholder="Nome">
+                    <input type="number" id="mag-custo" placeholder="Custo PE">
+                    <textarea id="mag-desc" placeholder="Efeito da Magia"></textarea>
+                    <button class="principal" onclick="addMagia()" style="border-color:var(--purple); color:var(--purple)">APRENDER</button>
                 </div>
                 <div id="lista-magias"></div>
             </div>
 
             <div id="aba-i" class="secao" style="display:none">
-                <input type="text" id="add-i" placeholder="Item..."><button class="principal" onclick="addItem()">ADICIONAR</button>
+                <input type="text" id="add-i" placeholder="Item..."><button class="principal" onclick="addItem()">ADD</button>
                 <div id="lista-i"></div>
             </div>
 
@@ -118,54 +129,79 @@
     </div>
 
     <script>
-        let agentes = JSON.parse(localStorage.getItem('CRIS_V12_DATA')) || [];
+        let agentes = JSON.parse(localStorage.getItem('CRIS_V13')) || [];
         let atual = null;
+        const CLASSES = {
+            tatico: { b: "+5 PV, +2 PE. Foco: Atletismo, Fortitude, Luta, Pontaria, Tática.", p: ["Atletismo", "Fortitude", "Luta", "Pontaria", "Tática"] },
+            sintonizador: { b: "+5 SAN, +3 PE. Foco: Intuição, Ocultismo, Percepção, Vontade.", p: ["Intuição", "Ocultismo", "Percepção", "Vontade"] },
+            especialista: { b: "+2 PE. Foco: Ciências, Crime, Investigação, Tecnologia.", p: ["Ciências", "Crime", "Investigação", "Tecnologia"] }
+        };
         const LISTA_P = ["Acrobacia", "Atletismo", "Ciências", "Crime", "Diplomacia", "Enganação", "Fortitude", "Furtividade", "Iniciativa", "Intimidação", "Intuição", "Investigação", "Luta", "Medicina", "Ocultismo", "Percepção", "Pontaria", "Reflexos", "Sobrevivência", "Tática", "Tecnologia", "Vontade"];
 
-        function addMagia() {
-            const nome = document.getElementById('mag-nome').value;
-            const custo = parseInt(document.getElementById('mag-custo').value) || 0;
-            const tipo = document.getElementById('mag-tipo').value;
-            const desc = document.getElementById('mag-desc').value;
-            if(nome) {
-                agentes[atual].magias.push({nome, custo, tipo, desc});
-                document.getElementById('mag-nome').value = '';
-                document.getElementById('mag-custo').value = '';
-                document.getElementById('mag-desc').value = '';
-                renderMagias(); salvar();
+        // ROLAGEM DE DADO
+        function rolar(label, bonus, faces=20) {
+            const r = Math.floor(Math.random() * faces) + 1;
+            document.getElementById('log-dados').style.display = 'block';
+            document.getElementById('roll-res').innerText = r + (parseInt(bonus)||0);
+            document.getElementById('roll-det').innerText = `${label}: ${r} + ${bonus}`;
+        }
+
+        function rolarMagia(nome) {
+            const input = prompt("Qual dado rolar para "+nome+"? (Ex: 2d6, 1d10)", "1d20");
+            if(!input) return;
+            const match = input.match(/(\d+)d(\d+)/);
+            if(match) {
+                let total = 0;
+                for(let i=0; i<match[1]; i++) total += Math.floor(Math.random() * match[2]) + 1;
+                document.getElementById('log-dados').style.display = 'block';
+                document.getElementById('roll-res').innerText = total;
+                document.getElementById('roll-det').innerText = `${nome}: ${input}`;
             }
         }
 
-        function conjurar(i) {
-            const m = agentes[atual].magias[i];
-            const peAtual = parseInt(document.getElementById('ag-pe').value);
-            if(peAtual >= m.custo) {
-                const novoPe = peAtual - m.custo;
-                document.getElementById('ag-pe').value = novoPe;
-                atualizarBarras();
-                alert(`Conjurações: ${m.nome}! Você gastou ${m.custo} PE.`);
-            } else {
-                alert("ESFORÇO INSUFICIENTE!");
-            }
+        function aplicarClasse() {
+            const k = document.getElementById('ag-classe').value;
+            document.getElementById('info-buff').innerText = CLASSES[k] ? CLASSES[k].b : "Selecione uma classe.";
+            salvar(); renderPericias();
+        }
+
+        function renderPericias() {
+            const grid = document.getElementById('grid-pericias'); grid.innerHTML = '';
+            const focos = CLASSES[document.getElementById('ag-classe').value]?.p || [];
+            LISTA_P.forEach(p => {
+                const v = agentes[atual].pericias[p] || 0;
+                const eFoco = focos.includes(p);
+                grid.innerHTML += `<div class="p-item ${eFoco?'p-foco':''}"><span>${eFoco?'★':''} ${p}</span><div style="display:flex; gap:3px;"><button class="btn-roll" onclick="rolar('${p}', ${v})">🎲</button><select onchange="salvarP('${p}', this)" style="width:40px; padding:0;">${[0,5,10,15,20].map(n=>`<option value="${n}" ${v==n?'selected':''}>${n}</option>`).join('')}</select></div></div>`;
+            });
+        }
+
+        function addMagia() {
+            const n = document.getElementById('mag-nome').value;
+            const c = document.getElementById('mag-custo').value;
+            const d = document.getElementById('mag-desc').value;
+            if(n){ agentes[atual].magias.push({n, c, d}); salvar(); renderMagias(); }
         }
 
         function renderMagias() {
             const div = document.getElementById('lista-magias'); div.innerHTML = '';
-            const cores = { Morte: "#555", Sangue: "#ff4444", Energia: "#a033ff", Conhecimento: "#ffd700" };
             agentes[atual].magias.forEach((m, i) => {
-                div.innerHTML += `
-                    <div class="spell-card" style="border-left-color: ${cores[m.tipo]}">
-                        <div class="spell-header">
-                            <strong style="color:${cores[m.tipo]}">${m.nome}</strong>
-                            <span class="tag-pe">${m.custo} PE</span>
-                        </div>
-                        <p style="font-size:0.75rem; margin:5px 0;">${m.desc}</p>
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-                            <button class="btn-cast" onclick="conjurar(${i})">CONJURAR</button>
-                            <button onclick="agentes[atual].magias.splice(${i},1); renderMagias(); salvar();" style="background:none; border:none; color:red; cursor:pointer;">X</button>
-                        </div>
-                    </div>`;
+                div.innerHTML += `<div class="spell-card"><div style="display:flex; justify-content:space-between"><strong>${m.n}</strong> <span style="color:var(--orange)">${m.c} PE</span></div><p style="font-size:0.7rem; margin:5px 0;">${m.d}</p><div style="display:flex; gap:5px;"><button class="btn-roll" onclick="rolarMagia('${m.n}')">🎲 Rolar</button><button class="btn-roll" onclick="conjurar(${i})" style="color:var(--purple)">Conjurar</button><button onclick="agentes[atual].magias.splice(${i},1); renderMagias(); salvar()" style="background:none; border:none; color:red">X</button></div></div>`;
             });
+        }
+
+        function conjurar(i) {
+            const m = agentes[atual].magias[i];
+            const pe = document.getElementById('ag-pe');
+            if(parseInt(pe.value) >= m.c) { pe.value -= m.c; atualizarBarras(); } else { alert("PE insuficiente!"); }
+        }
+
+        function abrir(i) {
+            atual = i; const ag = agentes[i];
+            if(!ag.magias) ag.magias = []; if(!ag.res) ag.res = [];
+            document.getElementById('tela-lista').classList.remove('active');
+            document.getElementById('tela-agente').classList.add('active');
+            ['nome','pv','pvmax','san','sanmax','pe','pemax','classe'].forEach(f => document.getElementById('ag-'+f).value = ag[f] || (f.includes('max')?20:0));
+            aplicarClasse(); atualizarBarras(); renderPericias(); renderMagias(); renderInv(); renderRes(); aba('f');
         }
 
         function atualizarBarras() {
@@ -177,46 +213,22 @@
             salvar();
         }
 
-        function renderPericias() {
-            const grid = document.getElementById('grid-pericias'); grid.innerHTML = '';
-            LISTA_P.forEach(p => {
-                const v = agentes[atual].pericias[p] || 0;
-                grid.innerHTML += `<div style="display:flex; justify-content:space-between; background:#0d0d0d; padding:5px; border:1px solid #222; font-size:0.7rem;"><span>${p}</span><select onchange="salvarP('${p}', this)" style="width:40px; margin:0; padding:0;">${[0,5,10,15,20].map(n => `<option value="${n}" ${v==n?'selected':''}>${n}</option>`).join('')}</select></div>`;
-            });
-        }
-
-        function abrir(i) {
-            atual = i; const ag = agentes[i];
-            if(!ag.magias) ag.magias = [];
-            document.getElementById('tela-lista').classList.remove('active');
-            document.getElementById('tela-agente').classList.add('active');
-            ['nome','pv','pvmax','san','sanmax','pe','pemax','classe'].forEach(f => {
-                document.getElementById('ag-'+f).value = ag[f] || (f.includes('max') ? 20 : 0);
-            });
-            atualizarBarras(); renderPericias(); renderMagias(); renderInv(); renderRes(); aba('f');
-        }
-
         function salvar() {
-            if(atual !== null) {
-                ['nome','pv','pvmax','san','sanmax','pe','pemax','classe'].forEach(f => {
-                    agentes[atual][f] = document.getElementById('ag-'+f).value;
-                });
-            }
-            localStorage.setItem('CRIS_V12_DATA', JSON.stringify(agentes));
+            if(atual !== null) ['nome','pv','pvmax','san','sanmax','pe','pemax','classe'].forEach(f => agentes[atual][f] = document.getElementById('ag-'+f).value);
+            localStorage.setItem('CRIS_V13', JSON.stringify(agentes));
         }
-
-        function salvarP(p, el) { agentes[atual].pericias[p] = parseInt(el.value); salvar(); }
+        function salvarP(p, el) { agentes[atual].pericias[p] = parseInt(el.value); salvar(); renderPericias(); }
         function desenharLista() {
             const lista = document.getElementById('lista-agentes'); lista.innerHTML = '';
-            agentes.forEach((ag, i) => { lista.innerHTML += `<div class="card"><span onclick="abrir(${i})" style="cursor:pointer; flex:1"><strong>${ag.nome}</strong></span><button onclick="agentes.splice(${i},1); salvar(); desenharLista()" style="color:red; background:none; border:none; cursor:pointer;">X</button></div>`; });
+            agentes.forEach((ag, i) => { lista.innerHTML += `<div class="card"><span onclick="abrir(${i})" style="cursor:pointer; flex:1"><strong>${ag.nome}</strong> [${ag.classe||'?'}]</span><button onclick="agentes.splice(${i},1); salvar(); desenharLista()" style="color:red; background:none; border:none">X</button></div>`; });
         }
-        function novoAgente() { agentes.push({nome: "Agente Novo", pericias: {}, inv: [], res: [], magias: [], pv:20, pvmax:20, san:20, sanmax:20, pe:5, pemax:5}); salvar(); desenharLista(); }
+        function novoAgente() { agentes.push({nome: "Agente Novo", pericias: {}, inv: [], res: [], magias: []}); salvar(); desenharLista(); }
         function fecharAgente() { salvar(); atual = null; document.getElementById('tela-agente').classList.remove('active'); document.getElementById('tela-lista').classList.add('active'); desenharLista(); }
         function aba(id) { document.querySelectorAll('.secao').forEach(s => s.style.display = 'none'); document.querySelectorAll('#menu-nav button').forEach(b => b.classList.remove('active-nav')); document.getElementById('aba-'+id).style.display = 'block'; document.getElementById('btn-'+id).classList.add('active-nav'); }
         function addItem() { const v = document.getElementById('add-i'); if(v.value){ agentes[atual].inv.push(v.value); v.value=''; renderInv(); salvar(); } }
         function renderInv() { const div = document.getElementById('lista-i'); div.innerHTML = ''; agentes[atual].inv.forEach((it) => { div.innerHTML += `<div class="card">${it}</div>`; }); }
         function addRes() { const n = document.getElementById('add-rn'), d = document.getElementById('add-rd'); if(n.value){ agentes[atual].res.push({n:n.value, d:d.value}); n.value=''; d.value=''; renderRes(); salvar(); } }
-        function renderRes() { const div = document.getElementById('lista-r'); div.innerHTML = ''; agentes[atual].res.forEach((r) => { div.innerHTML += `<div class="card"><strong>${r.n}</strong></div>`; }); }
+        function renderRes() { const div = document.getElementById('lista-r'); div.innerHTML = ''; agentes[atual].res.forEach((r) => { div.innerHTML += `<div class="card" style="flex-direction:column; align-items:flex-start;"><strong>${r.n}</strong><p style="font-size:0.7rem; margin:5px 0;">${r.d}</p><button class="btn-roll" onclick="rolarMagia('${r.n}')">🎲 Rolar</button></div>`; }); }
 
         window.onload = desenharLista;
     </script>
